@@ -5,19 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 import com.sns.todo_app_android_fireabse.models.Todo;
 
 import java.util.List;
-
-import jp.wasabeef.blurry.Blurry;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> {
 
@@ -51,6 +50,9 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         Todo todo = todoList.get(position);
         String name = todo.getName();
         holder.tvName.setText(name);
+
+        Timestamp timestamp = todo.getCreatedAt();
+        LogUtil.d(" Log " + " = timestamp="+timestamp);
     }
 
     @Override
@@ -61,38 +63,21 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
     public class
     MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
+        TextView tvCreatedAt;
         ImageButton btnUpdate, btnDelete;
-        ImageView imageViewBlurSample;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             tvName = itemView.findViewById(R.id.tvName);
+            tvName = itemView.findViewById(R.id.tvCreatedAt);
             btnUpdate = itemView.findViewById(R.id.btnUpdate);
             btnDelete = itemView.findViewById(R.id.btnDelete);
-
-            imageViewBlurSample = itemView.findViewById(R.id.imageViewBlurSample);
-
-//            Blurry.with(imageViewBlurSample.getContext())
-//                    .radius(10)
-//                    .sampling(8)
-//                    .capture(imageViewBlurSample)
-//                    .getAsync(
-//                            imageViewBlurSample.setImageDrawable(mActivity.getDrawable(R.drawable.screenshot))
-//                    );
 
             btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Blurry.with(imageViewBlurSample.getContext())
-                            .radius(10)
-                            .sampling(8)
-                            .async()
-                            .capture(imageViewBlurSample)
-                            .into(imageViewBlurSample);
-
-                    return;
-//                    listener.onUpdateClicked(todoList.get(getAdapterPosition()));
+                    listener.onUpdateClicked(todoList.get(getAdapterPosition()));
                 }
             });
 

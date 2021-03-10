@@ -1,19 +1,22 @@
 package com.sns.todo_app_android_fireabse.models;
 
-import android.util.Log;
+import com.google.firebase.Timestamp;
 
 public class Todo {
 
     private String id;
     private String name;
+    private String test;
+    private Timestamp createdAt;
 
     public Todo() {
-
     }
 
-    public Todo(String id, String name) {
+    public Todo(String id, String name, String test,Timestamp createdAt) {
         this.id = id;
         this.name = name;
+        this.test = test;
+        this.createdAt = createdAt;
     }
 
     public String getId() {
@@ -32,21 +35,19 @@ public class Todo {
         this.name = name;
     }
 
-    /**
-     * JsonObjectからCommunityBoardMessageを作成して返します
-     *
-     * @return
-     */
-    public static Todo toObject(String name, String id) {
+    public String getTest() {
+        return test;
+    }
 
-        Log.d("TAG" ,"public static Todo toObject(String name, String id) {");
+    public void getTest(String test) {
+        this.test = test;
+    }
 
-        Todo todo = new Todo();
-        todo.name = name;
-        todo.id = id;
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
 
-        Log.d("TAG" ,"todo.name =" +todo.name  + " todo.id = " +todo.id );
-
-        return todo;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

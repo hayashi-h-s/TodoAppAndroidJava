@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "577259918958",
+    "project_id": "todoappandroidfireabse",
+    "storage_bucket": "todoappandroidfireabse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577259918958:android:0b5f27e82e58157d9b387f",
+        "android_client_info": {
+          "package_name": "com.sns.todo_app_android_fireabse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577259918958-0vj2qsi07c5pd3knh8bqbfgcv653i1k0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sns.todo_app_android_fireabse",
+            "certificate_hash": "107126468b66ec33733cc3a9542104063b20ddf2"
+          }
+        },
+        {
+          "client_id": "577259918958-4akhf0u7pt0cfsa93nj5ctt53m72cq4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQov7InmtWh2PDzmphZvH8CO6ZyBce9SE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577259918958-4akhf0u7pt0cfsa93nj5ctt53m72cq4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

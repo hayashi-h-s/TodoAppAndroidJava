@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 import com.sns.todo_app_android_fireabse.adapter.TodoAdapter;
 import com.sns.todo_app_android_fireabse.models.Todo;
@@ -26,7 +27,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRvTodo;
     private List<Todo> mTodoList = new ArrayList<>();
     private TodoAdapter mAdapter;
     private FirebaseFirestore db;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         // Viewの取得
-        mRvTodo = findViewById(R.id.rvTodo);
+        RecyclerView mRvTodo = findViewById(R.id.rvTodo);
         mProgressBar = findViewById(R.id.progressBar);
 
         mAdapter = new TodoAdapter(
@@ -51,16 +51,17 @@ public class MainActivity extends AppCompatActivity {
                 new TodoAdapter.OnButtonClickListener() {
                     @Override
                     public void onUpdateClicked(Todo todo) {
-                        Log.d("TAG" ,"public void onUpdateClicked(Todo todo) {");
+                        Log.d("TAG", "public void onUpdateClicked(Todo todo) {");
                         // アップデートするためにはIDを渡す
                         Intent i = new Intent(MainActivity.this, AddTodoActivity.class);
-                        i.putExtra("id",todo.getId());
-                        i.putExtra("name",todo.getName());
+                        i.putExtra("id", todo.getId());
+                        i.putExtra("name", todo.getName());
                         startActivity(i);
                     }
+
                     @Override
                     public void onDeleteClicked(final Todo todo) {
-                        Log.d("TAG" ,"public void onDeleteClicked(Todo todo) {");
+                        Log.d("TAG", "public void onDeleteClicked(Todo todo) {");
 
                         db.collection("todos").
                                 document(todo.getId())
@@ -81,8 +82,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddTodoButton(View view) {
-        Log.d("TAG", "public void onClickAddTodoButton(View view) {");
-         startActivity(new Intent(MainActivity.this,AddTodoActivity.class));
+
+//        Date dateObj = new Date();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss" , Locale.JAPAN);
+//
+//        String dateSt = dateFormat.format( dateObj );
+//
+//        LogUtil.d(" Log " + " = dateSt =" +dateSt);
+//
+//        LogUtil.d(" Log " + " = new Date().getTime() =" +new Date().getTime());
+
+
+        startActivity(new Intent(MainActivity.this, AddTodoActivity.class));
     }
 
     @Override
@@ -90,13 +101,25 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mProgressBar.setVisibility(View.VISIBLE);
         // リストを取得する
-        db.collection("todos").get()
+        db.collection("todoList")
+                .get()
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         mTodoList.clear();
-                        for (DocumentSnapshot doc: task.getResult()){
+                        for (DocumentSnapshot doc : task.getResult()) {
+
                             Todo todo = doc.toObject(Todo.class);
+
+//                            todo.getName();
+//                            todo.getCreatedAt();
+
+                            LogUtil.d(" Log " +
+                                    "todo.getName() = " +todo.getName() +
+                                    " todo.getCreatedAt() =" +todo.getCreatedAt() +
+                                    " todo.getTest() =" + todo.getTest()
+                            );
+
                             todo.setId(doc.getId());
                             mTodoList.add(todo);
                         }
