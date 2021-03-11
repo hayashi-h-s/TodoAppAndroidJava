@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
-import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 import com.sns.todo_app_android_fireabse.models.Todo;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> {
@@ -51,8 +51,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         String name = todo.getName();
         holder.tvName.setText(name);
 
-        Timestamp timestamp = todo.getCreatedAt();
-        LogUtil.d(" Log " + " = timestamp="+timestamp);
+        Timestamp timestamp = todo.getTimestamp();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/h:m");
+        String timeSt = sdf.format(timestamp.toDate());
+        holder.tvTimestamp.setText(timeSt);
     }
 
     @Override
@@ -63,14 +65,14 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
     public class
     MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
-        TextView tvCreatedAt;
+        TextView tvTimestamp;
         ImageButton btnUpdate, btnDelete;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             tvName = itemView.findViewById(R.id.tvName);
-            tvName = itemView.findViewById(R.id.tvCreatedAt);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestampAt);
             btnUpdate = itemView.findViewById(R.id.btnUpdate);
             btnDelete = itemView.findViewById(R.id.btnDelete);
 

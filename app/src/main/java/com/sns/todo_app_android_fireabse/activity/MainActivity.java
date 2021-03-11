@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onDeleteClicked(final Todo todo) {
                         Log.d("TAG", "public void onDeleteClicked(Todo todo) {");
 
-                        db.collection("todos").
+                        db.collection("todoList").
                                 document(todo.getId())
                                 .delete()
                                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<Void>() {
@@ -116,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
                             LogUtil.d(" Log " +
                                     "todo.getName() = " +todo.getName() +
-                                    " todo.getCreatedAt() =" +todo.getCreatedAt() +
-                                    " todo.getTest() =" + todo.getTest()
+                                    " todo.getTimestamp() =" +todo.getTimestamp()
                             );
 
                             todo.setId(doc.getId());
