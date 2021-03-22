@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
-import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 import com.sns.todo_app_android_fireabse.activity.TodoItemActivity;
 import com.sns.todo_app_android_fireabse.models.Todo;
@@ -59,7 +58,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         String timeSt = sdf.format(timestamp.toDate());
         holder.tvTimestamp.setText(timeSt);
 
-        onClickTodoUpdate(holder.todoListLayout);
+        onClickTodoUpdate(
+                holder.todoListLayout,
+                todo
+        );
 
 //        holder.todoListLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -76,15 +78,23 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
     }
 
 
-    public void onClickTodoUpdate(View v) {
+    public void onClickTodoUpdate(
+            View v,
+            final Todo todo
+    ) {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtil.d(" Log " + " = public void onClickTodoUpdate(View v) {");
-
                 Intent intent = new Intent(mActivity, TodoItemActivity.class);
-                mActivity.startActivity(intent);
 
+//                intent.putExtra("id", todo.getId());
+//                intent.putExtra("name", todo.getName());
+
+                intent.putExtra(TodoItemActivity.INTENT_TODO_INSTANCE, todo);
+
+//                LogUtil.d(" Log " + " = todo.getId() =" +todo.getId());
+
+                mActivity.startActivity(intent);
             }
         });
     }

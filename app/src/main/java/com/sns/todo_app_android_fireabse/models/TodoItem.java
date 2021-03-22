@@ -4,16 +4,16 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
-public class Todo implements Serializable {
+public class TodoItem implements Serializable {
 
     private String id;
     private String name;
     private Timestamp timestamp;
 
-    public Todo() {
+    public TodoItem() {
     }
 
-    public Todo(String id, String name, Timestamp timestamp) {
+    public TodoItem(String id, String name, Timestamp timestamp) {
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
@@ -23,23 +23,23 @@ public class Todo implements Serializable {
         return id;
     }
 
-    public void setId(String id) {
+    public void setTodoId(String id) {
         this.id = id;
     }
 
-    public String getName() {
+    public String getItemName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setItemName(String name) {
         this.name = name;
     }
 
-    public Timestamp getTimestamp() {
+    public Timestamp getItemTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setItemTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 }

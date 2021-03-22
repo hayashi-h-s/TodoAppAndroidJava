@@ -40,5 +40,4 @@
         android:onClick="firebaseTextButton"
         android:text="ファイヤーベーステストボタン" />
 
-
 </LinearLayout>

@@ -16,11 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 
@@ -50,8 +53,9 @@ public class AddTodoActivity extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
 
-        Log.d(
-                "Log",
+
+
+        Log.d("Log",
                 " id =" + id +
                         " name =" + name
         );
@@ -74,9 +78,7 @@ public class AddTodoActivity extends AppCompatActivity {
     public void onClickAddTodoButton(View view) {
 
 
-
-
-LogUtil.d(" Log " + " = public void onClickAddTodoButton(View view) {");
+        LogUtil.d(" Log " + " = public void onClickAddTodoButton(View view) {");
 
 //        db.collection("rooms").document("roomA")
 //                .collection("messages").document("message1");
@@ -128,6 +130,59 @@ LogUtil.d(" Log " + " = public void onClickAddTodoButton(View view) {");
             return;
         }
 
+//        Map<String, Object> user = new HashMap<>();
+//
+//        user.put("first", todoName);
+//        user.put("middle", todoName);
+//        user.put("last", "Turing");
+//        user.put("born", 1912);
+//        user.put("id", id);
+
+// Add a new document with a generated ID
+//        db.collection("users")
+//                .add(user)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//
+//                    }
+//                });
+
+//        new Date().getTime();
+//
+//        LogUtil.d(" Log " + " = new Date().getTime()");
+//
+//        if (id == null) {
+//            db.collection("todoLists")
+//                    .document(id)
+//                    .collection("test")
+//                    .document("ドキュメント")
+//                    .set(Collections.singletonMap("name", todoName))
+//                    .addOnCompleteListener(AddTodoActivity.this, new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            Toast.makeText(AddTodoActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+//                            finish();
+//                        }
+//                    });
+//        } else {
+//            db.collection("todoList")
+//                    .document(id)
+//                    .set(Collections.singletonMap("name", todoName))
+//                    .addOnCompleteListener(AddTodoActivity.this, new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            Toast.makeText(AddTodoActivity.this, "Successfully Updated", Toast.LENGTH_SHORT).show();
+//                            finish();
+//                        }
+//                    });
+//        }
 
         // モデルからリストに追加
         Map<String, Object> todo = new HashMap<>();
@@ -137,9 +192,42 @@ LogUtil.d(" Log " + " = public void onClickAddTodoButton(View view) {");
         // ネストしたデータ構造を
         Map<String, Object> nestedData = new HashMap<>();
         nestedData.put("a", 5);
-        nestedData.put("b", true);
 
         todo.put("objectExample", nestedData);
+
+        db.collection("todoLists")
+                .document("todoList")
+                .set(todo)
+                .addOnCompleteListener(AddTodoActivity.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(AddTodoActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+
+
+        // テスト用のコード
+//        db.collection("todoLists")
+//                .set(todo)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Toast.makeText(AddTodoActivity.this, "投稿しました", Toast.LENGTH_SHORT).show();
+//                        finish();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(AddTodoActivity.this, "投稿に失敗しました", Toast.LENGTH_SHORT).show();
+//                        finish();
+//                    }
+//                });
+
+//        db.collection("rooms").document("roomA")
+//                .collection("messages").document("message1");
+
 
         if (id == null) {
             db.collection("todoList")
@@ -190,5 +278,81 @@ LogUtil.d(" Log " + " = public void onClickAddTodoButton(View view) {");
 
     public void firebaseTextButton(View view) {
 
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("capital", true);
+
+        db.collection("cities").document("BJ")
+                .set(data, SetOptions.merge());
+
+
+//        LogUtil.d(" Log " + " = ");
+//
+//        CollectionReference cities = db.collection("cities");
+//
+//        Map<String, Object> data1 = new HashMap<>();
+//        data1.put("name", "San Francisco");
+//        data1.put("state", "CA");
+//        data1.put("country", "USA");
+//        data1.put("capital", false);
+//        data1.put("population", 860000);
+//        data1.put("regions", Arrays.asList("west_coast", "norcal"));
+//        cities.document("SF").set(data1);
+//
+//        Map<String, Object> data2 = new HashMap<>();
+//        data2.put("name", "Los Angeles");
+//        data2.put("state", "CA");
+//        data2.put("country", "USA");
+//        data2.put("capital", false);
+//        data2.put("population", 3900000);
+//        data2.put("regions", Arrays.asList("west_coast", "socal"));
+//        cities.document("LA").set(data2);
+//
+//        Map<String, Object> data3 = new HashMap<>();
+//        data3.put("name", "Washington D.C.");
+//        data3.put("state", null);
+//        data3.put("country", "USA");
+//        data3.put("capital", true);
+//        data3.put("population", 680000);
+//        data3.put("regions", Arrays.asList("east_coast"));
+//        cities.document("DC").set(data3);
+//
+//        Map<String, Object> data4 = new HashMap<>();
+//        data4.put("name", "Tokyo");
+//        data4.put("state", null);
+//        data4.put("country", "Japan");
+//        data4.put("capital", true);
+//        data4.put("population", 9000000);
+//        data4.put("regions", Arrays.asList("kanto", "honshu"));
+//        cities.document("TOK").set(data4);
+//
+//        Map<String, Object> data5 = new HashMap<>();
+//        data5.put("name", "Beijing");
+//        data5.put("state", null);
+//        data5.put("country", "China");
+//        data5.put("capital", true);
+//        data5.put("population", 21500000);
+//        data5.put("regions", Arrays.asList("jingjinji", "hebei"));
+//        cities.document("BJ").set(data5);
+//
+//        DocumentReference docRef = db.collection("cities").document("SF");
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//
+//                        LogUtil.d(" Log " + " =document.getData()) = " +document.getData());
+//                    } else {
+//                        Log.d("TAG", "No such document");
+//                    }
+//                } else {
+//                    Log.d("TAG!", "get failed with ", task.getException());
+//
+//                    LogUtil.d(" Log " + " =document.getData()) = " + task.getException());
+//                }
+//            }
+//        });
     }
 }
