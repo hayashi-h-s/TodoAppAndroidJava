@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         db = FirebaseFirestore.getInstance();
+
+        LogUtil.d(" Log " + " = db = FirebaseFirestore.getInstance(); =" +db);
+
         // Viewの取得
         RecyclerView mRvTodo = findViewById(R.id.rvTodo);
         mProgressBar = findViewById(R.id.progressBar);
@@ -92,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //        LogUtil.d(" Log " + " = new Date().getTime() =" +new Date().getTime());
 
-
         startActivity(new Intent(MainActivity.this, AddTodoActivity.class));
     }
 
@@ -100,19 +103,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mProgressBar.setVisibility(View.VISIBLE);
+
         // リストを取得する
         db.collection("todoList")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         mTodoList.clear();
+
+                        LogUtil.d(" Log " + " = task =" +task);
+                        LogUtil.d(" Log " + " = task.getResult() =" +task.getResult());
+
                         for (DocumentSnapshot doc : task.getResult()) {
 
                             Todo todo = doc.toObject(Todo.class);
-
-//                            todo.getName();
-//                            todo.getCreatedAt();
 
                             LogUtil.d(" Log " +
                                     "todo.getName() = " +todo.getName() +

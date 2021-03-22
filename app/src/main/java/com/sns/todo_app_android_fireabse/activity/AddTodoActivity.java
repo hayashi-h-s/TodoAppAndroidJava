@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 
 import java.util.HashMap;
@@ -35,7 +36,6 @@ public class AddTodoActivity extends AppCompatActivity {
 
     private String id;
     private String name;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,36 @@ public class AddTodoActivity extends AppCompatActivity {
     }
 
     public void onClickAddTodoButton(View view) {
+
+
+
+
+LogUtil.d(" Log " + " = public void onClickAddTodoButton(View view) {");
+
+//        db.collection("rooms").document("roomA")
+//                .collection("messages").document("message1");
+
+//        Map<String, Object> city = new HashMap<>();
+//        city.put("name", "Los Angeles");
+//        city.put("state", "CA");
+//        city.put("country", "USA");
+
+//        db.collection("cities").document("LA")
+//                .set(city)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d("TAG", "DocumentSnapshot successfully written!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("TAG", "Error writing document", e);
+//                    }
+//                });
+
+
         // このメソッドはバージョンによっては使えないので、後で変更する
         if (!isOnline()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(AddTodoActivity.this);
@@ -98,71 +128,18 @@ public class AddTodoActivity extends AppCompatActivity {
             return;
         }
 
-//        Map<String, Object> user = new HashMap<>();
-//
-//        user.put("first", todoName);
-//        user.put("middle", todoName);
-//        user.put("last", "Turing");
-//        user.put("born", 1912);
-//        user.put("id", id);
-
-// Add a new document with a generated ID
-//        db.collection("users")
-//                .add(user)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//
-//                    }
-//                });
-
-//
-//        new Date().getTime();
-//
-//        LogUtil.d(" Log " + " = new Date().getTime()");
-
-
-//        if (id == null) {
-//            db.collection("todoList")
-//                    .document()
-//                    .set(Collections.singletonMap("name", todoName))
-//                    .addOnCompleteListener(AddTodoActivity.this, new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            Toast.makeText(AddTodoActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        }
-//                    });
-//        } else {
-//            db.collection("todoList")
-//                    .document(id)
-//                    .set(Collections.singletonMap("name", todoName))
-//                    .addOnCompleteListener(AddTodoActivity.this, new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            Toast.makeText(AddTodoActivity.this, "Successfully Updated", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        }
-//                    });
-//        }
 
         // モデルからリストに追加
         Map<String, Object> todo = new HashMap<>();
         todo.put("name", todoName);
         todo.put("timestamp", FieldValue.serverTimestamp());
-        todo.put("test", "テスト投稿");
 
+        // ネストしたデータ構造を
+        Map<String, Object> nestedData = new HashMap<>();
+        nestedData.put("a", 5);
+        nestedData.put("b", true);
 
-//        Timestamp timestamp = new Timestamp(new Date());
-
-//;        todo.put("createdAt", );
-//        todo.put("createdAt", new Date().getTime());
+        todo.put("objectExample", nestedData);
 
         if (id == null) {
             db.collection("todoList")
@@ -212,76 +189,6 @@ public class AddTodoActivity extends AppCompatActivity {
     }
 
     public void firebaseTextButton(View view) {
-
-//        LogUtil.d(" Log " + " = ");
-//
-//        CollectionReference cities = db.collection("cities");
-//
-//        Map<String, Object> data1 = new HashMap<>();
-//        data1.put("name", "San Francisco");
-//        data1.put("state", "CA");
-//        data1.put("country", "USA");
-//        data1.put("capital", false);
-//        data1.put("population", 860000);
-//        data1.put("regions", Arrays.asList("west_coast", "norcal"));
-//        cities.document("SF").set(data1);
-//
-//        Map<String, Object> data2 = new HashMap<>();
-//        data2.put("name", "Los Angeles");
-//        data2.put("state", "CA");
-//        data2.put("country", "USA");
-//        data2.put("capital", false);
-//        data2.put("population", 3900000);
-//        data2.put("regions", Arrays.asList("west_coast", "socal"));
-//        cities.document("LA").set(data2);
-//
-//        Map<String, Object> data3 = new HashMap<>();
-//        data3.put("name", "Washington D.C.");
-//        data3.put("state", null);
-//        data3.put("country", "USA");
-//        data3.put("capital", true);
-//        data3.put("population", 680000);
-//        data3.put("regions", Arrays.asList("east_coast"));
-//        cities.document("DC").set(data3);
-//
-//        Map<String, Object> data4 = new HashMap<>();
-//        data4.put("name", "Tokyo");
-//        data4.put("state", null);
-//        data4.put("country", "Japan");
-//        data4.put("capital", true);
-//        data4.put("population", 9000000);
-//        data4.put("regions", Arrays.asList("kanto", "honshu"));
-//        cities.document("TOK").set(data4);
-//
-//        Map<String, Object> data5 = new HashMap<>();
-//        data5.put("name", "Beijing");
-//        data5.put("state", null);
-//        data5.put("country", "China");
-//        data5.put("capital", true);
-//        data5.put("population", 21500000);
-//        data5.put("regions", Arrays.asList("jingjinji", "hebei"));
-//        cities.document("BJ").set(data5);
-//
-//        DocumentReference docRef = db.collection("cities").document("SF");
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//
-//                        LogUtil.d(" Log " + " =document.getData()) = " +document.getData());
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                    }
-//                } else {
-//                    Log.d("TAG!", "get failed with ", task.getException());
-//
-//                    LogUtil.d(" Log " + " =document.getData()) = " + task.getException());
-//                }
-//            }
-//        });
-
 
     }
 }
