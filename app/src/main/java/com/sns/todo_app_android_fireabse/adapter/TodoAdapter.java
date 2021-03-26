@@ -85,16 +85,15 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(mActivity, TodoItemActivity.class);
+//                intent.putExtra(TodoItemActivity.INTENT_TODO_INSTANCE, todo);
+                mActivity.startActivity(intent);
 
 //                intent.putExtra("id", todo.getId());
 //                intent.putExtra("name", todo.getName());
-
-                intent.putExtra(TodoItemActivity.INTENT_TODO_INSTANCE, todo);
-
 //                LogUtil.d(" Log " + " = todo.getId() =" +todo.getId());
 
-                mActivity.startActivity(intent);
             }
         });
     }

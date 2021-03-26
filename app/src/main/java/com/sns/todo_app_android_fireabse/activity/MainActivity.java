@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         db = FirebaseFirestore.getInstance();
-
-        LogUtil.d(" Log " + " = db = FirebaseFirestore.getInstance(); =" +db);
 
         // Viewの取得
         RecyclerView mRvTodo = findViewById(R.id.rvTodo);
@@ -104,25 +102,29 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mProgressBar.setVisibility(View.VISIBLE);
 
-        // リストを取得する
-        db.collection("todoList")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .get()
+        CollectionReference todoRef = db.collection("TodoLists");
+
+//                .orderBy("timestamp", Query.Direction.DESCENDING)
+
+        todoRef.get()
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         mTodoList.clear();
 
+                        LogUtil.d(" Log " + " = task.isSuccessful() =" +task.isSuccessful());
+
                         LogUtil.d(" Log " + " = task =" +task);
-                        LogUtil.d(" Log " + " = task.getResult() =" +task.getResult());
+                        LogUtil.d(" Log " + " = task.getResult().size() =" +task.getResult().size());
 
                         for (DocumentSnapshot doc : task.getResult()) {
+
+                            LogUtil.d(" Log " + " = for (DocumentSnapshot doc : task.getResult()) {");
 
                             Todo todo = doc.toObject(Todo.class);
 
                             LogUtil.d(" Log " +
-                                    "todo.getName() = " +todo.getName() +
-                                    " todo.getTimestamp() =" +todo.getTimestamp()
+                                    "todo.getName() = " +todo.getName()
                             );
 
                             todo.setId(doc.getId());

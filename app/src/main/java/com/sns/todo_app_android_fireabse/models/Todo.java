@@ -4,12 +4,17 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
+
+
 public class Todo implements Serializable {
+
+//     class Timestamp implements Serializable {}
 
     private String id;
     private String name;
     private Timestamp timestamp;
 
+    // 空のコンストラクタを用意しないと不具合になる
     public Todo() {
     }
 
@@ -42,4 +47,7 @@ public class Todo implements Serializable {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
+
 }
+
+

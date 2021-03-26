@@ -40,4 +40,11 @@
         android:onClick="firebaseTextButton"
         android:text="ファイヤーベーステストボタン" />
 
+    <Button
+        android:id="@+id/toNoteActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickToNoteActivity"
+        android:text="ノート画面に移動" />
+
 </LinearLayout>
