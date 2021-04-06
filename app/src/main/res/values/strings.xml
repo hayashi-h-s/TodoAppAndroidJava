@@ -11,4 +11,10 @@
     <string name="add_todo_activity_network_error_dialog_body">通信状況の良い場所で再度お試しください</string>
     <!--add_todo_activity_network_error_dialog end-->
 
+    <!--todo_item_activity start-->
+    <string name="add_todo_item_dialog_title">追加する</string>
+    <string name="add_todo_item_dialog_positive_button">追加</string>
+    <!--todo_item_activity end-->
+
+
 </resources>

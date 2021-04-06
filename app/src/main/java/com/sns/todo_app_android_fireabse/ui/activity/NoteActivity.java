@@ -1,4 +1,4 @@
-package com.sns.todo_app_android_fireabse.activity;
+package com.sns.todo_app_android_fireabse.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;

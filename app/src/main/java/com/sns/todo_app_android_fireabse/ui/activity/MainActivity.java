@@ -1,4 +1,4 @@
-package com.sns.todo_app_android_fireabse.activity;
+package com.sns.todo_app_android_fireabse.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
-import com.sns.todo_app_android_fireabse.adapter.TodoAdapter;
+import com.sns.todo_app_android_fireabse.ui.adapter.TodoAdapter;
 import com.sns.todo_app_android_fireabse.models.Todo;
 
 import java.util.ArrayList;
@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Viewの取得
-        RecyclerView mRvTodo = findViewById(R.id.rvTodo);
+        RecyclerView rvTodo = findViewById(R.id.rvTodo);
         mProgressBar = findViewById(R.id.progressBar);
+
 
         mAdapter = new TodoAdapter(
                 MainActivity.this,
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 new TodoAdapter.OnButtonClickListener() {
                     @Override
                     public void onUpdateClicked(Todo todo) {
-                        Log.d("TAG", "public void onUpdateClicked(Todo todo) {");
                         // アップデートするためにはIDを渡す
                         Intent i = new Intent(MainActivity.this, AddTodoActivity.class);
                         i.putExtra("id", todo.getId());
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onDeleteClicked(final Todo todo) {
                         Log.d("TAG", "public void onDeleteClicked(Todo todo) {");
 
-                        db.collection("todoList").
+                        db.collection("todoLists").
                                 document(todo.getId())
                                 .delete()
                                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<Void>() {
@@ -79,54 +79,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        mRvTodo.setLayoutManager(new LinearLayoutManager(this));
-        mRvTodo.setAdapter(mAdapter);
-    }
-
-    public void onClickAddTodoButton(View view) {
-
-//        Date dateObj = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss" , Locale.JAPAN);
-//
-//        String dateSt = dateFormat.format( dateObj );
-//
-//        LogUtil.d(" Log " + " = dateSt =" +dateSt);
-//
-//        LogUtil.d(" Log " + " = new Date().getTime() =" +new Date().getTime());
-
-        startActivity(new Intent(MainActivity.this, AddTodoActivity.class));
+        rvTodo.setLayoutManager(new LinearLayoutManager(this));
+        rvTodo.setAdapter(mAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mProgressBar.setVisibility(View.VISIBLE);
-
-        CollectionReference todoRef = db.collection("TodoLists");
-
-//                .orderBy("timestamp", Query.Direction.DESCENDING)
-
-        todoRef.get()
+        CollectionReference TodoLists = db.collection("TodoLists");
+        TodoLists.orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         mTodoList.clear();
-
-                        LogUtil.d(" Log " + " = task.isSuccessful() =" +task.isSuccessful());
-
-                        LogUtil.d(" Log " + " = task =" +task);
-                        LogUtil.d(" Log " + " = task.getResult().size() =" +task.getResult().size());
-
                         for (DocumentSnapshot doc : task.getResult()) {
-
-                            LogUtil.d(" Log " + " = for (DocumentSnapshot doc : task.getResult()) {");
-
                             Todo todo = doc.toObject(Todo.class);
-
-                            LogUtil.d(" Log " +
-                                    "todo.getName() = " +todo.getName()
-                            );
-
                             todo.setId(doc.getId());
                             mTodoList.add(todo);
                         }
@@ -136,4 +105,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     *
+     * @param view
+     */
+    public void onClickAddTodoButton(View view) {
+        startActivity(new Intent(MainActivity.this, AddTodoActivity.class));
+    }
+
+
+
+
 }

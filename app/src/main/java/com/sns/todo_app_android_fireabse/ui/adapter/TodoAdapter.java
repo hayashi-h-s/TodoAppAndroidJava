@@ -1,4 +1,4 @@
-package com.sns.todo_app_android_fireabse.adapter;
+package com.sns.todo_app_android_fireabse.ui.adapter;
 
 
 import android.content.Intent;
@@ -13,17 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.Timestamp;
 import com.sns.todo_app_android_fireabse.R;
-import com.sns.todo_app_android_fireabse.activity.TodoItemActivity;
 import com.sns.todo_app_android_fireabse.models.Todo;
+import com.sns.todo_app_android_fireabse.ui.activity.TodoItemActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> {
 
     List<Todo> todoList;
+    Todo mTodo;
+
     OnButtonClickListener listener;
     private AppCompatActivity mActivity;
 
@@ -40,28 +40,31 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.todo_item, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
         return new MyViewHolder(item);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Todo todo = todoList.get(position);
+        mTodo = todoList.get(position);
         // TODOのタイトル名
-        String name = todo.getName();
+        String name = mTodo.getName();
         holder.tvName.setText(name);
 
-        Timestamp timestamp = todo.getTimestamp();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/h:m");
-        String timeSt = sdf.format(timestamp.toDate());
-        holder.tvTimestamp.setText(timeSt);
+        // 時間は後で設定
+//        Timestamp timestamp = todo.getTimestamp();
+//        String timeSt = sdf.format(timestamp.toDate());
+//        holder.tvTimestamp.setText(timeSt);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/h:m");
 
-        onClickTodoUpdate(
-                holder.todoListLayout,
-                todo
-        );
+        // クリックリスナーのセット
+        holder.todoListLayout.setOnClickListener(this::onClickTodoUpdate);
+
+//        onClickTodoUpdate(
+//                holder.todoListLayout,
+//                todo
+//        );
 
 //        holder.todoListLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -77,25 +80,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         return todoList.size();
     }
 
-
     public void onClickTodoUpdate(
-            View v,
-            final Todo todo
+            View view
     ) {
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(mActivity, TodoItemActivity.class);
-//                intent.putExtra(TodoItemActivity.INTENT_TODO_INSTANCE, todo);
-                mActivity.startActivity(intent);
-
-//                intent.putExtra("id", todo.getId());
-//                intent.putExtra("name", todo.getName());
-//                LogUtil.d(" Log " + " = todo.getId() =" +todo.getId());
-
-            }
-        });
+        Intent intent = new Intent(mActivity, TodoItemActivity.class);
+        intent.putExtra(TodoItemActivity.INTENT_TODO_ID, mTodo.getId());
+        intent.putExtra(TodoItemActivity.INTENT_TODO_NAME, mTodo.getName());
+        mActivity.startActivity(intent);
     }
 
     public interface OnButtonClickListener {
@@ -104,8 +95,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         public void onDeleteClicked(Todo todo);
     }
 
-    public class
-    MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout todoListLayout;
         TextView tvName;
         TextView tvTimestamp;
@@ -135,6 +125,4 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
             });
         }
     }
-
-
 }

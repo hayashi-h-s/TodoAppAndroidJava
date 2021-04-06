@@ -23,23 +23,23 @@ public class TodoItem implements Serializable {
         return id;
     }
 
-    public void setTodoId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getItemName() {
+    public String getName() {
         return name;
     }
 
-    public void setItemName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Timestamp getItemTimestamp() {
-        return timestamp;
-    }
-
-    public void setItemTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+//    public Timestamp getItemTimestamp() {
+//        return timestamp;
+//    }
+//
+//    public void setItemTimestamp(Timestamp timestamp) {
+//        this.timestamp = timestamp;
+//    }
 }
