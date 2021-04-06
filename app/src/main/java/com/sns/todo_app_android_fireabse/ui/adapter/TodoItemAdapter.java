@@ -27,15 +27,18 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemAdapter.MyView
     private List<TodoItem> mTodoItemList;
     private AppCompatActivity mActivity;
     private FirebaseFirestore mDb;
+    private String mTodoId;
 
     public TodoItemAdapter(
             AppCompatActivity activity,
             List<TodoItem> todoItemList,
-            FirebaseFirestore db
+            FirebaseFirestore db,
+            String todoId
     ) {
         this.mActivity = activity;
         this.mTodoItemList = todoItemList;
         this.mDb = db;
+        this.mTodoId = todoId;
     }
 
     @NonNull
@@ -87,16 +90,22 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemAdapter.MyView
      * TodoItemを削除する処理
      */
     private void todoItemDelete(TodoItem todoItem) {
-        LogUtil.d(" Log " + " = todoItem =" + todoItem);
 
-        mDb.collection("todoLists").
-                document(todoItem.getId())
+        LogUtil.d(" Log " + " = todoItem =" + todoItem.getId()
+                + " mTodoId =" + mTodoId
+        );
+
+        mDb.collection("todoLists")
+                .document(mTodoId)
                 .collection("TodoItems")
-                .document()
+                .document(todoItem.getId())
                 .delete()
                 .addOnCompleteListener(mActivity, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+
+                        LogUtil.d(" Log " + " = todoItem.getName()　＝ " + todoItem.getName());
+
                         Toast.makeText(mActivity, todoItem.getName() + "を削除しました", Toast.LENGTH_SHORT).show();
                         mTodoItemList.remove(todoItem);
 //                        mAdapter.notifyDataSetChanged();

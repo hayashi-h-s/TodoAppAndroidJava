@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rvTodo = findViewById(R.id.rvTodo);
         mProgressBar = findViewById(R.id.progressBar);
 
-
         mAdapter = new TodoAdapter(
                 MainActivity.this,
                 mTodoList,

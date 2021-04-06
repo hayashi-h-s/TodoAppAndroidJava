@@ -50,6 +50,8 @@ public class TodoItemActivity extends AppCompatActivity {
 
         todoId = getIntent().getStringExtra(INTENT_TODO_ID);
 
+        LogUtil.d(" Log " + " = todoId =" +todoId);
+
         // Viewの取得
         RecyclerView rvTodoItem = findViewById(R.id.rvTodoItem);
         mProgressBar = findViewById(R.id.progressBar);
@@ -66,7 +68,8 @@ public class TodoItemActivity extends AppCompatActivity {
         mAdapter = new TodoItemAdapter(
                 TodoItemActivity.this,
                 mTodoItemList,
-                db
+                db,
+                todoId
         );
 
         // タイトルは後でつける
