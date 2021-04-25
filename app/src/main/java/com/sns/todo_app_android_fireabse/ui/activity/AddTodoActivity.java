@@ -13,9 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,8 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddTodoActivity extends AppCompatActivity {
-
-    Button mFirebaseTextButton;
 
     private EditText etTodo;
     private FirebaseFirestore db;
@@ -63,7 +62,7 @@ public class AddTodoActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AddTodoActivity.this, MainActivity.class));
+                startActivity(new Intent(AddTodoActivity.this, TodoActivity.class));
             }
         });
     }
@@ -117,10 +116,11 @@ public class AddTodoActivity extends AppCompatActivity {
                     });
         } else {
             db.collection("TodoLists")
-                    .add(todo)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    .document(id)
+                    .set(todo)
+                    .addOnCompleteListener(AddTodoActivity.this, new OnCompleteListener<Void>() {
                         @Override
-                        public void onSuccess(DocumentReference documentReference) {
+                        public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(AddTodoActivity.this, "更新しました", Toast.LENGTH_SHORT).show();
                             finish();
                         }
@@ -135,10 +135,7 @@ public class AddTodoActivity extends AppCompatActivity {
         }
     }
 
-
-
     public void firebaseTextButton(View view) {
-
         String todoTitle = etTodo.getText().toString().trim();
 
         // コレクション参考サイト
@@ -147,18 +144,6 @@ public class AddTodoActivity extends AppCompatActivity {
         todo.put("timestamp", FieldValue.serverTimestamp());
 
         db.collection("TodoLists").add(todo);
-
-    }
-
-    public void onClickToNoteActivity(View view) {
-
-        String todoTitle = etTodo.getText().toString().trim();
-        CollectionReference notebookRef = db.collection("Notebook");
-
-        Map<String, Object> todoItem = new HashMap<>();
-        todoItem.put("name", todoTitle);
-        todoItem.put("timestamp", FieldValue.serverTimestamp());
-        db.collection("TodoLists").document("yW4mfyuVmjHxBfl8Ocnx").collection("TodoItems").add(todoItem);
 
     }
 }

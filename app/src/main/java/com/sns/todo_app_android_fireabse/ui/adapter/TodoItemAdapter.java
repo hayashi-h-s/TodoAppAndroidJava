@@ -1,6 +1,6 @@
 package com.sns.todo_app_android_fireabse.ui.adapter;
 
-
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,109 +10,96 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.sns.todo_app_android_fireabse.LogUtil;
 import com.sns.todo_app_android_fireabse.R;
 import com.sns.todo_app_android_fireabse.models.TodoItem;
+import com.sns.todo_app_android_fireabse.ui.dialog.AddTodoItemDialog;
 
 import java.util.List;
 
 public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemAdapter.MyViewHolder> {
 
     private List<TodoItem> mTodoItemList;
-    private AppCompatActivity mActivity;
-    private FirebaseFirestore mDb;
+    private Activity mActivity;
+    private FirebaseFirestore mFireStore;
     private String mTodoId;
+    private OnTodoItemRefreshListener mOnTodoItemRefreshListener;
 
     public TodoItemAdapter(
-            AppCompatActivity activity,
+            Activity activity,
+            OnTodoItemRefreshListener onTodoItemRefreshListener,
             List<TodoItem> todoItemList,
-            FirebaseFirestore db,
+            FirebaseFirestore fireStore,
             String todoId
     ) {
         this.mActivity = activity;
+        this.mOnTodoItemRefreshListener = onTodoItemRefreshListener;
         this.mTodoItemList = todoItemList;
-        this.mDb = db;
+        this.mFireStore = fireStore;
         this.mTodoId = todoId;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_row, parent, false);
         return new MyViewHolder(item);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
-        LogUtil.d(" Log " + " = todoItemList.size" + mTodoItemList.size());
-
         TodoItem todoItem = mTodoItemList.get(position);
         // TODOのタイトル名
         String name = todoItem.getName();
-
-        LogUtil.d(" Log " + " = name  =" + name);
-
         holder.tvName.setText(name);
-
-        // 時間は後で設定
-//        Timestamp timestamp = todo.getTimestamp();
-//        String timeSt = sdf.format(timestamp.toDate());
-//        holder.tvTimestamp.setText(timeSt);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/h:m");
-
-        holder.btnUpdate.setOnClickListener(v -> todoItemUpdate(todoItem));
-        holder.btnDelete.setOnClickListener(v -> todoItemDelete(todoItem));
-
-//        holder.todoListLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LogUtil.d(" Log " + " = ");
-//            }
-//        });
-
+        holder.btnUpdate.setOnClickListener(v -> updateTodoItem(todoItem));
+        holder.btnDelete.setOnClickListener(v -> deleteTodoItem(todoItem));
     }
 
     /**
      * TodoItemを更新する処理
      */
-    private void todoItemUpdate(TodoItem todoItem) {
-        LogUtil.d(" Log " + " = todoItem =" + todoItem);
+    private void updateTodoItem(TodoItem todoItem) {
+        new AddTodoItemDialog(
+                mActivity,
+                mOnTodoItemRefreshListener,
+                mActivity.getString(R.string.common_update_positive_button),
+                mActivity.getString(R.string.common_update_positive_name),
+                mActivity.getString(R.string.common_string_chancel),
+                mFireStore,
+                mTodoId,
+                todoItem
+        );
     }
 
     /**
      * TodoItemを削除する処理
      */
-    private void todoItemDelete(TodoItem todoItem) {
-
-        LogUtil.d(" Log " + " = todoItem =" + todoItem.getId()
-                + " mTodoId =" + mTodoId
-        );
-
-        mDb.collection("todoLists")
+    private void deleteTodoItem(TodoItem todoItem) {
+        mFireStore.collection("TodoLists")
                 .document(mTodoId)
                 .collection("TodoItems")
                 .document(todoItem.getId())
                 .delete()
-                .addOnCompleteListener(mActivity, new OnCompleteListener<Void>() {
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        LogUtil.d(" Log " + " = todoItem.getName()　＝ " + todoItem.getName());
-
+                    public void onSuccess(Void aVoid) {
+                        mOnTodoItemRefreshListener.onRefresh();
                         Toast.makeText(mActivity, todoItem.getName() + "を削除しました", Toast.LENGTH_SHORT).show();
                         mTodoItemList.remove(todoItem);
-//                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
                     }
                 });
     }
-
 
     @Override
     public int getItemCount() {
@@ -129,9 +116,12 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemAdapter.MyView
             super(itemView);
             todoListLayout = itemView.findViewById(R.id.todoListLayout);
             tvName = itemView.findViewById(R.id.tvName);
-            tvTimestamp = itemView.findViewById(R.id.tvTimestampAt);
             btnUpdate = itemView.findViewById(R.id.btnUpdate);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
+    }
+
+    public interface OnTodoItemRefreshListener {
+        public void onRefresh();
     }
 }

@@ -4,6 +4,9 @@
     <!--common_string start-->
     <string name="common_string_ok">OK</string>
     <string name="common_string_chancel">キャンセル</string>
+    <string name="common_add_positive_button">追加する</string>
+    <string name="common_update_positive_button">更新する</string>
+    <string name="common_update_positive_name">更新する</string>
     <!--common_string end-->
 
     <!--add_todo_activity_network_error_dialog start-->
@@ -11,10 +14,12 @@
     <string name="add_todo_activity_network_error_dialog_body">通信状況の良い場所で再度お試しください</string>
     <!--add_todo_activity_network_error_dialog end-->
 
+    <!--todo_list_activity start-->
+    <string name="add_todo_list_dialog_title">リストの追加</string>
+    <string name="update_todo_list_dialog_title">リストの更新</string>
+    <!--todo_list_activity end-->
+
     <!--todo_item_activity start-->
-    <string name="add_todo_item_dialog_title">追加する</string>
-    <string name="add_todo_item_dialog_positive_button">追加</string>
+    <string name="add_todo_item_dialog_title">アイテムの追加</string>
     <!--todo_item_activity end-->
-
-
 </resources>

@@ -9,36 +9,33 @@
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="10"
-        android:paddingLeft="10dp"
-        android:textSize="18sp"
-        android:textColor="#000"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:id="@+id/tvTimestampAt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="10"
-        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:textSize="18sp"
         android:textColor="#000"
         android:layout_gravity="center"/>
 
     <ImageButton
         android:id="@+id/btnUpdate"
-        android:layout_width="0dp"
-        android:onClick="onClickTodoUpdate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:layout_marginEnd="10dp"
+        android:background="@color/white"
+        android:tint="@color/colorPrimary"
         android:src="@drawable/ic_edit"/>
 
     <ImageButton
         android:id="@+id/btnDelete"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:layout_marginEnd="10dp"
+        android:background="@color/white"
+        android:tint="@color/colorPrimary"
         android:src="@drawable/ic_delete"/>
 </LinearLayout>

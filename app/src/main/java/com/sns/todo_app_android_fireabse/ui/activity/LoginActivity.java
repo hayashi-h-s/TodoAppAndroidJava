@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                Intent i = new Intent(LoginActivity.this, TodoActivity.class);
                 startActivity(i);
             }
         });
