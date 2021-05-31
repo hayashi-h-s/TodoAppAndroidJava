@@ -15,7 +15,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-
     // youtube firebase
     // 1Firebase認証を使用したログインと登録のAndroidアプリチュートリアル-ユーザーの作成
     // https://www.youtube.com/watch?v=Z-RE1QuUWPg
@@ -36,9 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-
-
+        
     }
 
 //    @Override

@@ -5,6 +5,7 @@ import java.io.Serializable
 
 class Todo : Serializable {
     //     class Timestamp implements Serializable {}
+
     var id: String? = null
     var name: String? = null
     private var timestamp: Timestamp? = null

@@ -73,25 +73,9 @@ public class AddTodoDialog extends Dialog {
                     newTodoList.put("timestamp", FieldValue.serverTimestamp());
 
                     if (todo == null) {
-//                        fireStore.collection("TodoLists")
-//                                .add(newTodoList)
-//                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                    @Override
-//                                    public void onSuccess(DocumentReference documentReference) {
-//                                        Toast.makeText(activity, "投稿しました", Toast.LENGTH_SHORT).show();
-//                                        onTodoListRefreshListener.onRefresh();
-//                                    }
-//                                })
-//                                .addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        Toast.makeText(activity, "投稿に失敗しました", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-
                         fireStore.collection("User")
                                 .document(auth.getUid())
-                                .collection("TodoList")
+                                .collection("TodoLists")
                                 .add(newTodoList)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
@@ -106,9 +90,10 @@ public class AddTodoDialog extends Dialog {
                                         Toast.makeText(activity, "追加に失敗しました", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
                     } else {
-                        fireStore.collection("TodoLists")
+                        fireStore.collection("User")
+                                .document(auth.getUid())
+                                .collection("TodoLists")
                                 .document(todo.getId())
                                 .set(newTodoList)
                                 .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
@@ -125,47 +110,6 @@ public class AddTodoDialog extends Dialog {
                                     }
                                 });
                     }
-
-//                    if (todoItem == null) {
-//                        // 新規作成時の処理
-//                        fireStore.collection("TodoLists")
-//                                .document(todoId)
-//                                .collection("TodoItems")
-//                                .add(newTodoItem)
-//                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                    @Override
-//                                    public void onSuccess(DocumentReference documentReference) {
-//                                        onTodoItemRefreshListener.onRefresh();
-//                                        Toast.makeText(context, "追加しました", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                })
-//                                .addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        Toast.makeText(context, "追加に失敗しました", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                    } else {
-//                        // 更新時の処理
-//                        fireStore.collection("TodoLists")
-//                                .document(todoId)
-//                                .collection("TodoItems")
-//                                .document(todoItem.getId())
-//                                .set(newTodoItem)
-//                                .addOnCompleteListener((Activity) context, new OnCompleteListener<Void>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<Void> task) {
-//                                        onTodoItemRefreshListener.onRefresh();
-//                                        Toast.makeText(context, "更新しました", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                })
-//                                .addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        Toast.makeText(context, "追加に失敗しました", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                    }
                 }
         );
         dialog.setNegativeButton(negativeName, null);
